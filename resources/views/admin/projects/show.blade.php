@@ -29,6 +29,9 @@
                 <div class="card p-2">
                     <h1>{{$project->name}}</h1>
                     <p>{{ $project->description}}</p>
+                    <?php if($project->type != null ){ ?>
+                        <p>{{ $project->type->name}}</p>
+                    <?php } ?>
                     <img width="400px" height="400px" src="{{$project->link}}" alt="{{$project->name}}">
                 </div>
             </div>

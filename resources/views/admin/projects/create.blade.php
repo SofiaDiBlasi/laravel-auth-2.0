@@ -37,6 +37,19 @@
                     <div class="invalid-feedback">{{$message}}</div>
                 @enderror
 
+                <label>Type</label>
+                <select class="form-control @error('type') is-invalid @enderror" name="type" value="{{old("type")}}">
+                    @foreach ($data as $type)
+                        <option value="{{$type->id}}">
+                            {{$type->name}}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error("link")
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+
                 <input class="form-control mt-4 btn btn-secondary" type="submit" value="Invia">
              </form>
         </div>

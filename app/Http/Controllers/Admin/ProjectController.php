@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -29,7 +30,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $data = Type::all();
+        return view('admin.projects.create' , compact('data'));
     }
 
     /**
@@ -47,6 +49,7 @@ class ProjectController extends Controller
         $newProject->name = $data['name'];
         $newProject->description = $data['description'];
         $newProject->link = $data['link'];
+        $newProject->type_id = $data['type'];
         $newProject->save();
 
         return  redirect()->route('admin.projects.show', $newProject->id);
@@ -72,7 +75,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit' , compact('project'));
+        $data = Type::all();
+        return view('admin.projects.edit' , compact('project', 'data'));
     }
 
     /**
@@ -90,6 +94,7 @@ class ProjectController extends Controller
         $project->name = $data['name'];
         $project->description = $data['description'];
         $project->link = $data['link'];
+        $project->type_id = $data['type'];
         $project->update();
 
         return  redirect()->route('admin.projects.show', $project->id);
@@ -112,6 +117,7 @@ class ProjectController extends Controller
             "name" => "required|min:5|max:50",
             "description" => "required|min:5|max:65535",
             "link" => "required|max:65535",
+            "type" => "required",
         ], [
             "name.required" => "Il nome è obbligatorio",
             "name.min" => "Il nome deve essere almeno di :min caratteri",
@@ -123,6 +129,8 @@ class ProjectController extends Controller
 
             "link.required" => "L'immagine è obbligatoria",
             "link.max"=> "Link immagine non valido",
+
+            "type.required" => "La tipologia è obbligatoria",
         ])->validate();
 
         return $validator;
